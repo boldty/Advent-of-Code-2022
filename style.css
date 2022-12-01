@@ -1,0 +1,30 @@
+textarea {
+  height: 100%;
+  resize: none;
+}
+body {
+  display: flex;
+  background-color: rgb(20, 20, 20);
+}
+#left,
+#right {
+  width: 20rem;
+  max-width: 45%;
+}
+#middle {
+  padding: 1rem;
+  width: 5rem;
+  max-width: 10%;
+  position: relative;
+}
+#run {
+  top: 30%;
+  max-height: 60%;
+  position: inherit;
+}
+.io {
+  background-color: rgba(0, 0, 0, 0.25);
+  border-color: #008f11;
+  color: #00ff41;
+  width: 100%;
+}

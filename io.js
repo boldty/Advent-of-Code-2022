@@ -1,4 +1,4 @@
-import { run2 as run } from './apps/app2.js';
+import { run2 as run } from './apps/app3.js';
 
 function read() {
   const inputElement = document.getElementById('input');

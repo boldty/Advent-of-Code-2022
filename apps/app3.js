@@ -1,4 +1,13 @@
-function run1(input) {}
+function run1(input) {
+  let sum = 0;
+  input.split('\n').forEach((contents) => {
+    let compartment1 = contents.substring(0, contents.length / 2);
+    let compartment2 = contents.substring(contents.length / 2);
+    sum += calculatePointsForGroups([compartment1, compartment2]);
+  });
+
+  return sum;
+}
 
 function run2(input) {
   const groupSize = 3;
@@ -19,20 +28,11 @@ function calculatePointsForGroups(groups) {
   let otherGroups = groups.slice(1);
 
   for (let character of compareGroup) {
-    if (groupsContainChacter(character, otherGroups)) {
+    if (!otherGroups.find((group) => !group.includes(character))) {
       let points = calculatePointsForCharacter(character);
       return points;
     }
   }
-}
-
-function groupsContainChacter(character, groups) {
-  for (let group of groups) {
-    if (!group.includes(character)) {
-      return false;
-    }
-  }
-  return true;
 }
 
 function calculatePointsForCharacter(character) {

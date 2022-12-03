@@ -1,5 +1,4 @@
 textarea {
-  height: 100%;
   resize: none;
 }
 body {
@@ -11,6 +10,13 @@ body {
   width: 20rem;
   max-width: 45%;
 }
+#left textarea {
+  height: 100%;
+}
+#right {
+  top: 30%;
+  position: relative;
+}
 #middle {
   padding: 1rem;
   width: 5rem;
@@ -19,7 +25,6 @@ body {
 }
 #run {
   top: 30%;
-  max-height: 60%;
   position: inherit;
 }
 .io {

@@ -20,11 +20,11 @@ function run1(input) {
 function init(input) {
   map = new Map();
   lineNumber = 0;
+  currentDir = '';
 
   let lines = input.split('\n');
   while (lineNumber < lines.length) {
     let line = lines[lineNumber];
-    console.log(line);
     lineNumber++;
     if (line.startsWith(commandCd)) {
       handleCd(line);
@@ -84,6 +84,9 @@ function calculateMapSize(lines) {
 
 function updateFileSize(dir, size) {
   if (dir == '' || dir == '/') {
+    let currentSize = map.get('/') || 0;
+    currentSize += size;
+    map.set('/', currentSize);
     // Either or both?
     // Need to put in main dir as well
     return;
@@ -97,7 +100,22 @@ function updateFileSize(dir, size) {
 }
 
 function run2(input) {
-  return '';
+  init(input);
+  let finalValue = 70000000;
+  let totalSize = map.get('/');
+
+  let requiredFreeSpace = 30000000 - (finalValue - totalSize);
+
+  console.log('req' + requiredFreeSpace);
+
+  map.forEach((value, key) => {
+    if (value >= requiredFreeSpace && value < finalValue) {
+      console.log(value);
+      console.log(key);
+      finalValue = value;
+    }
+  });
+  return finalValue;
 }
 
 export { run1, run2 };

@@ -1,16 +1,18 @@
-let map = new Map();
-let lineNumber = 0;
 const dirSepparator = '/';
-let currentDir = '';
-
 const commandCd = '$ cd ';
 const commandLs = '$ ls';
 
+let map = new Map();
+let lineNumber = 0;
+let currentDir = '';
+
 function run1(input) {
   init(input);
+  const maxDirSize = 100000;
+
   let sum = 0;
   map.forEach((value, key) => {
-    if (value <= 100000) {
+    if (value <= maxDirSize) {
       sum += value;
     }
   });
@@ -48,7 +50,7 @@ function changeCurrentDir(dir) {
     currentDir = moveUpOne(currentDir);
     return;
   }
-  if (dir == '/') {
+  if (dir == dirSepparator) {
     currentDir = '';
     return;
   }
@@ -57,15 +59,15 @@ function changeCurrentDir(dir) {
 }
 
 function moveUpOne(dir) {
-  return dir.slice(0, dir.lastIndexOf('/'));
+  return dir.slice(0, dir.lastIndexOf(dirSepparator));
 }
 
 function handleLs(lines) {
-  let size = calculateMapSize(lines);
-  updateFileSize(currentDir, size);
+  let size = calculateSize(lines);
+  updateSizes(currentDir, size);
 }
 
-function calculateMapSize(lines) {
+function calculateSize(lines) {
   let sum = 0;
   while (lineNumber < lines.length) {
     let line = lines[lineNumber];
@@ -82,36 +84,30 @@ function calculateMapSize(lines) {
   return sum;
 }
 
-function updateFileSize(dir, size) {
-  if (dir == '' || dir == '/') {
-    let currentSize = map.get('/') || 0;
-    currentSize += size;
-    map.set('/', currentSize);
-    // Either or both?
-    // Need to put in main dir as well
-    return;
+function updateSizes(dir, size) {
+  if (dir == '') {
+    dir = dirSepparator;
   }
   let currentSize = map.get(dir) || 0;
   currentSize += size;
   map.set(dir, currentSize);
 
+  if (dir == dirSepparator) {
+    return;
+  }
   dir = moveUpOne(dir);
-  updateFileSize(dir, size);
+  updateSizes(dir, size);
 }
 
 function run2(input) {
   init(input);
-  let finalValue = 70000000;
-  let totalSize = map.get('/');
+  const maxSize = 70000000;
+  const totalSize = map.get(dirSepparator);
+  const requiredFreeSpace = 30000000 - (maxSize - totalSize);
 
-  let requiredFreeSpace = 30000000 - (finalValue - totalSize);
-
-  console.log('req' + requiredFreeSpace);
-
+  let finalValue = maxSize;
   map.forEach((value, key) => {
     if (value >= requiredFreeSpace && value < finalValue) {
-      console.log(value);
-      console.log(key);
       finalValue = value;
     }
   });

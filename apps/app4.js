@@ -51,4 +51,6 @@ function hasDupliacteSpan(pairString, overlapFunction) {
   return overlapFunction(start1, start2, end1, end2);
 }
 
-export { run1, run2 };
+window.run1 = run1;
+window.run2 = run2;
+window.defaultValue = ``;

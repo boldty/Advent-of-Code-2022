@@ -1,7 +1,3 @@
-import { run1, run2 } from './apps/app8.js';
-
-const defaultValue = ``;
-
 document.addEventListener('DOMContentLoaded', () => init());
 
 function init() {

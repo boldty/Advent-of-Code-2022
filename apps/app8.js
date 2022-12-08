@@ -149,4 +149,10 @@ function calculateDistanceDown(current, matrix, x, y, distance) {
   return calculateDistanceDown(current, matrix, x - 1, y, distance + 1);
 }
 
-export { run1, run2 };
+window.run1 = run1;
+window.run2 = run2;
+window.defaultValue = `30373
+25512
+65332
+33549
+35390`;

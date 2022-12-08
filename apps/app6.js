@@ -16,4 +16,6 @@ function getPacketMarkerIndex(input, packetLength) {
   }
 }
 
-export { run1, run2 };
+window.run1 = run1;
+window.run2 = run2;
+window.defaultValue = ``;

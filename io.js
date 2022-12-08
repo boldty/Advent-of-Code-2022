@@ -1,4 +1,4 @@
-import { run1, run2 } from './apps/app7.js';
+import { run1, run2 } from './apps/app8.js';
 
 const defaultValue = ``;
 

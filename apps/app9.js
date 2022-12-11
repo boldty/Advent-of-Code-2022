@@ -1,42 +1,18 @@
 function run1(input) {
-  let tailX = 0;
-  let tailY = 0;
-  let headX = 0;
-  let headY = 0;
-  let visitedCells = [getString(tailX, tailY)];
+  let head = [0, 0];
+  let tail = [0, 0];
+  let visitedCells = [getString(0, 0)];
 
   input.split('\n').forEach((line) => {
     let opperation = line.split(' ');
     let dirrection = opperation[0];
     let moves = opperation[1];
     for (let move = 1; move <= moves; move++) {
-      if (dirrection == 'R') {
-        headX++;
-        if (headX > tailX + 1) {
-          tailX++;
-          tailY = headY;
-        }
-      } else if (dirrection == 'L') {
-        headX--;
-        if (headX < tailX - 1) {
-          tailX--;
-          tailY = headY;
-        }
-      } else if (dirrection == 'U') {
-        headY++;
-        if (headY > tailY + 1) {
-          tailY++;
-          tailX = headX;
-        }
-      } else if (dirrection == 'D') {
-        headY--;
-        if (headY < tailY - 1) {
-          tailY--;
-          tailX = headX;
-        }
-      }
+      let response = updateVisistedCells(head, tail, dirrection, true);
+      head = response[0];
+      tail = response[1];
 
-      const string = getString(tailX, tailY);
+      const string = getString(tail[0], tail[1]);
       if (visitedCells.indexOf(string) === -1) {
         visitedCells.push(string);
       }
@@ -52,7 +28,94 @@ function getString(x, y) {
 }
 
 function run2(input) {
-  return '';
+  const numberOfNodes = 10;
+  let nodes = [];
+  for (i = 0; i < numberOfNodes; i++) {
+    nodes.push([0, 0]);
+  }
+
+  let visitedCells = [getString(0, 0)];
+
+  input.split('\n').forEach((line) => {
+    let opperation = line.split(' ');
+    let dirrection = opperation[0];
+    let moves = opperation[1];
+    for (let move = 1; move <= moves; move++) {
+      for (let i = 0; i < nodes.length - 1; i++) {
+        let head = nodes[i];
+        let tail = nodes[i + 1];
+
+        let response = updateVisistedCells(head, tail, dirrection, i == 0);
+        nodes[i] = response[0];
+        nodes[i + 1] = response[1];
+      }
+
+      const finalNode = nodes[numberOfNodes - 1];
+      const string = getString(finalNode[0], finalNode[1]);
+      if (visitedCells.indexOf(string) === -1) {
+        visitedCells.push(string);
+      }
+    }
+  });
+
+  return visitedCells.length;
+}
+
+function updateVisistedCells(head, tail, dirrection, firstNode) {
+  let headX = head[0];
+  let headY = head[1];
+  let tailX = tail[0];
+  let tailY = tail[1];
+
+  if (firstNode) {
+    if (dirrection == 'R') {
+      headX++;
+    } else if (dirrection == 'L') {
+      headX--;
+    } else if (dirrection == 'U') {
+      headY++;
+    } else if (dirrection == 'D') {
+      headY--;
+    }
+  }
+
+  if (headX > tailX + 1) {
+    tailX++;
+    tailY = updateY(headY, tailY);
+  } else if (headX < tailX - 1) {
+    tailX--;
+    tailY = updateY(headY, tailY);
+  } else if (headY > tailY + 1) {
+    tailY++;
+    tailX = updateX(headX, tailX);
+  } else if (headY < tailY - 1) {
+    tailY--;
+    tailX = updateX(headX, tailX);
+  }
+
+  head[0] = headX;
+  head[1] = headY;
+  tail[0] = tailX;
+  tail[1] = tailY;
+  return [head, tail];
+}
+
+function updateY(headY, tailY) {
+  if (tailY < headY) {
+    return tailY + 1;
+  } else if (tailY > headY) {
+    return tailY - 1;
+  }
+  return tailY;
+}
+
+function updateX(headX, tailX) {
+  if (tailX < headX) {
+    return tailX + 1;
+  } else if (tailX > headX) {
+    return tailX - 1;
+  }
+  return tailX;
 }
 
 window.run1 = run1;

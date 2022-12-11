@@ -9,27 +9,9 @@ function run1(input) {
   let x = 1;
   let output = [];
   let outputCycle = startCycle;
-  while (i < endCycle) {
-    let command = list.pop();
-    let isAddCommand = command != 'noop';
-
-    if (!isAddCommand) {
-      i++;
-    }
-
-    let cycle = isAddCommand ? i + 1 : i;
-    if (cycle == outputCycle) {
-      output.push(x * cycle);
-      if (cycle == endCycle) {
-        break;
-      }
-      outputCycle += intervall;
-    }
-    if (isAddCommand) {
-      x += Number(command.replace('addx ', ''));
-      i += 2;
-    }
-
+  let addOpperationInProgress = false;
+  let command;
+  while (i <= endCycle) {
     if (i == outputCycle) {
       output.push(x * i);
       if (i == endCycle) {
@@ -37,16 +19,58 @@ function run1(input) {
       }
       outputCycle += intervall;
     }
+
+    if (addOpperationInProgress) {
+      x += Number(command.replace('addx ', ''));
+      addOpperationInProgress = false;
+    } else {
+      command = list.pop();
+      if (command != 'noop') {
+        addOpperationInProgress = true;
+      }
+    }
+
+    i++;
   }
 
-  console.log(output);
   let sum = 0;
   output.forEach((element) => (sum += element));
   return sum;
 }
 
 function run2(input) {
-  return '';
+  let list = input.split('\n').reverse();
+
+  let i = 1;
+  let x = 1;
+  let addOpperationInProgress = false;
+  let output = '';
+  while (list.length > 0) {
+    pixelPossition = (i - 1) % 40;
+    if (x - 1 <= pixelPossition && x + 1 >= pixelPossition) {
+      output += '#';
+    } else {
+      output += '.';
+    }
+    if (pixelPossition == 39) {
+      output += '\n';
+    }
+
+    if (addOpperationInProgress) {
+      x += Number(command.replace('addx ', ''));
+      addOpperationInProgress = false;
+    } else {
+      command = list.pop();
+      if (command != 'noop') {
+        addOpperationInProgress = true;
+      }
+    }
+
+    i++;
+  }
+
+  document.getElementById('output2').rows = '7';
+  return output;
 }
 
 window.run1 = run1;

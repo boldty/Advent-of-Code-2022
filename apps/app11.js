@@ -8,7 +8,7 @@ function run2(input) {
 
 function calculateOutput(input, loops, divideNewValueBy) {
   let monkeyList = getInputList(input);
-  var lcmDivisor = monkeyList.map(monkey => monkey.divisibleTest).reduce((val1, val2) => val1 * val2);
+  var divisorProduct = monkeyList.map(monkey => monkey.divisibleTest).reduce((val1, val2) => val1 * val2);
 
   for (let i = 0; i < loops; i++) {
     monkeyList.forEach((monkey) => {
@@ -27,7 +27,7 @@ function calculateOutput(input, loops, divideNewValueBy) {
         if(divideNewValueBy) {
           newValue = Math.floor(newValue / divideNewValueBy);
         }
-        const newValueReminder = newValue % lcmDivisor;
+        const newValueReminder = newValue % divisorProduct;
 
         if(newValue % monkey.divisibleTest == 0) 
           monkeyList[monkey.trueMonkey].items.push(newValueReminder);
